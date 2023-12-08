@@ -1,6 +1,5 @@
 import React, { useEffect, useState, Suspense, useRef } from "react";
 import "./App.css";
-import { query } from "express";
 
 const BookComponent = React.lazy(() => import('./components/Book'));
 const LocationComponent = React.lazy(() => import('./components/Location'));
