@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
+  const [books, setBooks] = useState([]);
+  const [localtions, setLocations] = useState([]);
+
+  useEffect(() => {
+    fetch(`/api/books`)
+      .then((res) => res.json())
+      .then((data) => setBooks(data));
+  }, []);
+
+  useEffect(() => {
+    fetch(`/api/locations`)
+      .then((res) => res.json())
+      .then((data) => setLocations(data));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="content">
+        <ul className="locations">
+        {localtions.map((location) => (
+          <li key={location.id}>{location.name}</li>
+        ))}
+        </ul>
+        {books.map((book) => (
+          <p key={book.id}><i className="fa fa-folder"></i> {book.title}</p>
+        ))}
+      </div>
     </div>
   );
 }
