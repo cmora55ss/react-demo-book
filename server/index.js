@@ -15,22 +15,53 @@ const PORT = 3001;
 
 app.get("/api/locations", async (req, res) => {
     let locations = await db.getAll('locations');
-    return res.json(locations);
+    let root_locations = [];
+    locations.forEach(location => {
+        if (location.parent === undefined) {
+            root_locations.push(location)
+        }
+    });
+    return res.json(root_locations);
+});
+
+app.get("/api/locations/:locationId/locations", async (req, res) => {
+    let locations = await db.getAll('locations');
+    let locationId = req.params.locationId;
+    let parent_locations = [];
+    locations.forEach(location => {
+        if (location.parent === locationId) {
+            parent_locations.push(location)
+        }
+    });
+    return res.json(parent_locations);
 });
 
 app.post("/api/locations", async (req, res) => {
     let data = {
         "id": nanoid(10),
         "name": req.body.name,
-        "parent": req.body.location
+        "parent": req.body.parent
     }
-    let book = await db.save('locations', data);
-    return res.json(book);
+    let location = await db.save('locations', data);
+    return res.json(location);
 });
 
 app.get("/api/locations/:locationId", async (req, res) => {
-    let book = await db.getOne('locations', req.params.locationId);
-    return res.json(book);
+    let location = await db.getOne('locations', req.params.locationId);
+    return res.json(location);
+});
+
+app.get("/api/locations/:locationId/books", async (req, res) => {
+    let locationId = req.params.locationId;
+    let books = await db.getAll('books');
+
+    let location_books = [];
+    books.forEach(book => {
+        if (book.location === locationId) {
+            location_books.push(book)
+        }
+    });
+    return res.json(location_books);
 });
 
 app.put("/api/locations/:locationId", async (req, res) => {
@@ -39,7 +70,7 @@ app.put("/api/locations/:locationId", async (req, res) => {
     let data = {
         "id": location.id,
         "title": req.body.name,
-        "parent": req.body.location
+        "parent": req.body.parent
     }
     location = await db.update('locations', locationId, data);
     return res.json(location);

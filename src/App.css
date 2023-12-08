@@ -44,3 +44,30 @@
 .locations {
   list-style: none;
 }
+
+.locations li {
+  float: left;
+}
+
+.locations li:not(:first-child)::before {
+  content: '>';
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.locations li:last-child::before {
+  content: none;
+}
+
+.locations li form {
+  padding-left: 10px;
+}
+
+button.link {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  color: #069;
+  text-decoration: underline;
+  cursor: pointer;
+}
