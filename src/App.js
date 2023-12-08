@@ -12,7 +12,13 @@ function App() {
   const getLocations = (url) => {
     fetch(url)
       .then((res) => res.json())
-      .then((data) => setLocations(data));
+      .then((data) => {
+        setLocations(data);
+
+      let location = data[0].id;
+      getSelectedBooks(`/api/locations/${location}/books`);
+      getSelectedLocations(`/api/locations/${location}/locations`)
+      });
   }
 
   const getSelectedLocations = (url) => {
@@ -50,8 +56,14 @@ function App() {
             ))}
             <li>
               <form>
-              <input name="name" />
-              <button type="submit">Add Location</button>
+                <input name="name" />
+                <button type="submit">Add Location</button>
+              </form>
+            </li>
+            <li>
+              <form>
+                <input name="name" />
+                <button type="submit">Add Book</button>
               </form>
             </li>
           </ul>
