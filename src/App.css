@@ -55,14 +55,21 @@
   content: '>';
   margin-left: 5px;
   margin-right: 5px;
+  font-weight: normal;
+  font-size: 14px;
 }
 
-.locations li:last-child::before {
+.locations li.form::before {
   content: none;
 }
 
 .locations li form {
   padding-left: 10px;
+}
+
+.locations li.active {
+  font-weight: bold;
+  font-size: 18px;
 }
 
 button.link {
@@ -74,8 +81,17 @@ button.link {
   cursor: pointer;
 }
 
+button.link.no-underline {
+  text-decoration: none;
+}
+
 .section {
 
+}
+
+.section p {
+  line-height: 25px;
+  margin: 0;
 }
 
 
@@ -95,7 +111,7 @@ button.link {
   height: 25px;
   position:relative;
   text-indent:-9999em;
-  margin-bottom: -8px;
+  margin-bottom: -5px;
   margin-top: 12px;
 }
 .file:before {
@@ -138,7 +154,7 @@ button.link {
   background-color: rgb(227, 220, 11);
   border-radius: 0 3px 3px 3px;
   /*box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.59);*/
-  margin-bottom: -8px;
+  margin-bottom: -5px;
   margin-top: 12px;
 }
 

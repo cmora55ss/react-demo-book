@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react";
+function Location({locations, selectLocation}) {
+    // const [locations, setLocations] = useState([]);
 
-function Location(props) {
-    const [locations, setLocations] = useState([]);
-
-    useEffect(() => {
-        console.log(props.locations)
-        setLocations(props.locations);
-    }, [props.locations]);
+    // useEffect(() => {
+    //     setLocations(props.locations);
+    // }, [props.locations]);
 
     return (
         <div className="section">
             <p><a>&#8230;</a></p>
             {locations.map((location) => (
-                <p key={location.id}><i className="folder"></i> {location.title}</p>
+                <p key={location.id}>
+                    <button className="link no-underline" onClick={() => selectLocation(location.id)}><i className="folder"></i> {location.title}</button>
+                </p>
             ))}
         </div>
     );
