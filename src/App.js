@@ -27,12 +27,13 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setLocations(data);
-
-      let location = data[0].id;
-      selectedLocation.current = location;
-      getSelectedBooks(`/api/locations/${location}/books`);
-      getSelectedLocations(`/api/locations/${location}/locations`)
-    });
+        if (data.length > 1) {
+          let location = data[0].id;
+          selectedLocation.current = location;
+          getSelectedBooks(`/api/locations/${location}/books`);
+          getSelectedLocations(`/api/locations/${location}/locations`)
+        }
+      });
   }
 
   useEffect(() => {
@@ -52,6 +53,49 @@ function App() {
     return;
   }
 
+  const addLocation = (e) => {
+    (async () => {
+      let data = JSON.stringify({
+        name: e.target.name.value,
+        parent: selectedLocation.current
+      });
+      await fetch(`/api/locations`, {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: data
+      });
+      if (locations.length === 0) {
+        getLocations(`/api/locations`);
+      } else {
+        getSelectedLocations(`/api/locations/${selectedLocation.current}/locations`);
+      }
+
+      e.target.reset();
+    })();
+    e.preventDefault();
+  }
+
+  const addBook = (e) => {
+    (async () => {
+      let data = JSON.stringify({
+        title: e.target.title.value,
+        location: selectedLocation.current
+      });
+      await fetch(`/api/books`, {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: data
+      });
+      getSelectedBooks(`/api/locations/${selectedLocation.current}/books`);
+      e.target.reset();
+    })();
+    e.preventDefault();
+  }
+
   return (
     <div className="App">
       <div className="content">
@@ -64,19 +108,19 @@ function App() {
               </li>
             ))}
             <li className="form">
-              <form>
+              <form onSubmit={addLocation}>
                 <input name="name" />
                 <button type="submit">Add Location</button>
               </form>
             </li>
             <li className="form">
-              <form>
-                <input name="name" />
+              <form onSubmit={addBook}>
+                <input name="title" />
                 <button type="submit">Add Book</button>
               </form>
             </li>
           </ul>
-          <LocationComponent locations={selectedLocations}/>
+          <LocationComponent locations={selectedLocations} selectLocation={selectLocation} />
           <BookComponent books={selectedBooks} />
         </Suspense>
       </div>

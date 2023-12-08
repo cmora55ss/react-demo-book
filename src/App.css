@@ -45,6 +45,7 @@
   list-style: none;
   padding-left: 0;
   display: table-cell;
+  padding-bottom: 20px;
 }
 
 .locations li {
@@ -86,7 +87,6 @@ button.link.no-underline {
 }
 
 .section {
-
 }
 
 .section p {

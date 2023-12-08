@@ -17,7 +17,7 @@ app.get("/api/locations", async (req, res) => {
     let locations = await db.getAll('locations');
     let root_locations = [];
     locations.forEach(location => {
-        if (location.parent === undefined) {
+        if (!location.parent) {
             root_locations.push(location)
         }
     });
@@ -37,13 +37,14 @@ app.get("/api/locations/:locationId/locations", async (req, res) => {
 });
 
 app.post("/api/locations", async (req, res) => {
-    let data = {
-        "id": nanoid(10),
-        "name": req.body.name,
-        "parent": req.body.parent
-    }
-    let location = await db.save('locations', data);
-    return res.json(location);
+    let id = nanoid(10),
+        data = {
+            "id": id,
+            "name": req.body.name,
+            "parent": req.body.parent
+        };
+    await db.save('locations', data);
+    return res.json(data);
 });
 
 app.get("/api/locations/:locationId", async (req, res) => {
@@ -89,8 +90,9 @@ app.get("/api/books", async (req, res) => {
 });
 
 app.post("/api/books", async (req, res) => {
-    let data = {
-        "id": nanoid(10),
+    let id = nanoid(10),
+    data = {
+        "id": id,
         "title": req.body.title,
         "location": req.body.location
     }
